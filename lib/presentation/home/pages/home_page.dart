@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_training/presentation/home/widgets/custom_appbar.dart';
 
-class HomePage extends StatefulWidget { // StatefulWidget widget avec etat mutable
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
@@ -8,15 +9,20 @@ class HomePage extends StatefulWidget { // StatefulWidget widget avec etat mutab
 }
 
 class _HomePageState extends State<HomePage> {
+  final List<Widget> _pages = [
+
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.yellow,
-      appBar: AppBar(
-        backgroundColor: Colors.red,
-        title: const Text('Home Page'),
-        leading: Icon(Icons.arrow_back),
-      ),
+      backgroundColor: Colors.white,
+      appBar: CustomAppBarWidget(),
     );
   }
 }
+
+// StatelessWidget = UI fixe (sans memmoire)
+
+// StatefulWidget = UI dynamique (avec memmoire)
+
+
