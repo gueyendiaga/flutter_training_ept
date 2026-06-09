@@ -1,13 +1,11 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_training/core/constants/app_colors.dart';
-import 'package:flutter_training/presentation/home/pages/calls_page.dart';
-import 'package:flutter_training/presentation/home/pages/communities_page.dart';
-import 'package:flutter_training/presentation/home/pages/statuses_page.dart';
+import 'package:flutter_training/presentation/call/pages/calls_page.dart';
+import 'package:flutter_training/presentation/community/pages/communities_page.dart';
+import 'package:flutter_training/presentation/status/pages/statuses_page.dart';
 import 'package:flutter_training/presentation/home/widgets/custom_appbar.dart';
 
-import 'chats_page.dart';
+import '../../chat/pages/chats_page.dart';
 
 
 class HomePage extends StatefulWidget {
