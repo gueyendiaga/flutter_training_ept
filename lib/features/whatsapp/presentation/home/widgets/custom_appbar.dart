@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_sizes.dart';
+import '../../../../../core/constants/app_colors.dart';
+import '../../../../../core/constants/app_sizes.dart';
 
 class CustomAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBarWidget({super.key});
@@ -88,7 +88,7 @@ class CustomAppBarWidget extends StatelessWidget implements PreferredSizeWidget 
         ],
       );
   }
-  
+
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
 }

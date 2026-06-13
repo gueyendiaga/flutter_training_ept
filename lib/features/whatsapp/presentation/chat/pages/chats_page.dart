@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_training/core/constants/app_sizes.dart';
 import 'package:flutter_training/core/datasource/chatlist.dart';
-import 'package:flutter_training/presentation/chat/widgets/chat_item_widget.dart';
 
 import '../../home/widgets/custom_search_bar.dart';
+import '../widgets/chat_item_widget.dart';
 
 class ChatsPage extends StatefulWidget {
   const ChatsPage({super.key});

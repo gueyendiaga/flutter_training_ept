@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/constants/app_sizes.dart';
-import '../../../core/models/chat_model.dart';
+import '../../../../../core/constants/app_sizes.dart';
+import '../../../../../core/models/chat_model.dart';
 
 class ChatItemWidget extends StatelessWidget {
   final ChatModel chat;
@@ -28,7 +28,7 @@ class ChatItemWidget extends StatelessWidget {
       ),
       subtitle: Text(chat.message),
       trailing: Text(chat.date),
-      
+
       onTap: onTap
     );
   }
