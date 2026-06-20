@@ -8,7 +8,9 @@ abstract final class AppSizes {
   static const double lg = 24.0;
   static const double xl = 32.0;
   static const double appBarHeight = 70.0;
-  
+  static const double m20 = 20.0;
+  static const double cardImageHeight = 150.0;
+
   // TODO : Ajouter d'autres tailles utilisées dans l'application
 
   // Borders radius

@@ -1,5 +1,5 @@
 class ProductModel {
-  final String id;
+  final String? id;
   final String title;
   final String description;
   final String category;
@@ -7,7 +7,7 @@ class ProductModel {
   final int price;
 
   ProductModel({
-    required this.id,
+    this.id,
     required this.title,
     required this.description,
     required this.category,
