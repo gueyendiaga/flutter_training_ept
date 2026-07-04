@@ -3,6 +3,8 @@ import 'package:flutter_training/core/constants/app_colors.dart';
 import 'package:flutter_training/core/constants/app_sizes.dart';
 import 'package:flutter_training/core/models/product_model.dart';
 
+import '../../../../../core/widgets/app_text_field.dart';
+
 class ProductFormDialog extends StatefulWidget {
   final ProductModel? product;
   final void Function(ProductModel) onSubmit;
@@ -15,16 +17,32 @@ class ProductFormDialog extends StatefulWidget {
 
 class _ProductFormDialogState extends State<ProductFormDialog> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _categoryController = TextEditingController();
-  final TextEditingController _priceController = TextEditingController();
-  final TextEditingController _photoController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
+  late TextEditingController _titleController;
+  late TextEditingController _categoryController;
+  late TextEditingController _priceController;
+  late TextEditingController _photoController;
+  late TextEditingController _descriptionController;
+
   bool get _isEditing => widget.product != null;
+
+  @override
+  void initState() {
+    super.initState();
+    initializeFormValues(widget.product);
+  }
+
+  void initializeFormValues(ProductModel? product) {
+    _titleController = TextEditingController(text: product?.title ?? '');
+    _categoryController = TextEditingController(text: product?.category ?? '');
+    _priceController = TextEditingController(text: product?.price.toString() ?? '');
+    _photoController = TextEditingController(text: product?.image ?? '');
+    _descriptionController = TextEditingController(text: product?.description ?? '');
+  }
 
   Future<void>_onSubmit() async {
     if(!_formKey.currentState!.validate()) return; // Form is not valid
     final product = ProductModel(
+        id: widget.product?.id ?? '',
         title: _titleController.text.trim(),
         description: _descriptionController.text.trim(),
         category: _categoryController.text.trim(),
@@ -47,13 +65,11 @@ class _ProductFormDialogState extends State<ProductFormDialog> {
             spacing: AppSizes.md,
             children: [
               Text(_isEditing ? 'Modifier le produit' : 'Nouveau produit'),
-              TextFormField(
+              AppTextField(
                 controller: _titleController,
-                decoration: InputDecoration(
-                  label: Text('Titre du produit'),
-                  hint: Text('Entrez le titre du produit'),
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(AppSizes.radiusSm)),
-                ),
+                label: 'Titre du produit',
+                hint: 'Entrez le titre du produit',
+                keyboardType: TextInputType.emailAddress,
                 validator: (value) {
                   if(value == null || value.isEmpty) {
                     return 'Le titre du produit est requis';
@@ -61,13 +77,11 @@ class _ProductFormDialogState extends State<ProductFormDialog> {
                   return null;
                 },
               ),
-              TextFormField(
+              AppTextField(
                 controller: _categoryController,
-                decoration: InputDecoration(
-                  label: Text('Catégorie du produit'),
-                  hint: Text('Entrez la Catégorie du produit'),
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(AppSizes.radiusSm)),
-                ),
+                label: 'Catégorie du produit',
+                hint: 'Entrez la Catégorie du produit',
+                keyboardType: TextInputType.emailAddress,
                 validator: (value) {
                   if(value == null || value.isEmpty) {
                     return 'La catégorie du produit est requise';
@@ -77,14 +91,11 @@ class _ProductFormDialogState extends State<ProductFormDialog> {
                   return null;
                 },
               ),
-              TextFormField(
-                keyboardType: TextInputType.number,
+              AppTextField(
                 controller: _priceController,
-                decoration: InputDecoration(
-                  label: Text('Prix du produit'),
-                  hint: Text('Entrez le prix du produit'),
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(AppSizes.radiusSm)),
-                ),
+                label: 'Prix du produit',
+                hint: 'Entrez le prix du produit',
+                keyboardType: TextInputType.emailAddress,
                 validator: (value) {
                   if(value == null || value.isEmpty) {
                     return 'Le prix du produit est requis';
@@ -92,13 +103,11 @@ class _ProductFormDialogState extends State<ProductFormDialog> {
                   return null;
                 },
               ),
-              TextFormField(
+              AppTextField(
                 controller: _photoController,
-                decoration: InputDecoration(
-                  label: Text('Image du produit'),
-                  hint: Text('Entrez l\'image du produit'),
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(AppSizes.radiusSm)),
-                ),
+                label: 'Image du produit',
+                hint: 'Entrez l\'image du produit',
+                keyboardType: TextInputType.emailAddress,
                 validator: (value) {
                   if(value == null || value.isEmpty) {
                     return 'L\'image du produit est requise';
@@ -106,22 +115,21 @@ class _ProductFormDialogState extends State<ProductFormDialog> {
                   return null;
                 },
               ),
-              TextFormField(
-                minLines: 3,
-                maxLines: 6,
+              AppTextField(
                 controller: _descriptionController,
-                decoration: InputDecoration(
-                  label: Text('Description du produit'),
-                  hint: Text('Entrez la description du produit'),
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(AppSizes.radiusSm)),
-                ),
+                label: 'Description du produit',
+                hint: 'Entrez la description du produit',
+                keyboardType: TextInputType.emailAddress,
                 validator: (value) {
                   if(value == null || value.isEmpty) {
-                    return 'La description du produit est requise';
+                    return 'L\'image du produit est requise';
                   }
                   return null;
                 },
+                minLines: 3,
+                maxLines: 6,
               ),
+
               Row(
                 children: [
                   Expanded(

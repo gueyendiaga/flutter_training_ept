@@ -11,6 +11,16 @@ abstract final class AppSizes {
   static const double m20 = 20.0;
   static const double cardImageHeight = 150.0;
 
+  // Composants
+  static const double buttonHeightSm = 36.0;
+  static const double buttonHeightMd = 48.0;
+  static const double buttonHeightLg = 56.0;
+  static const double inputHeight = 52.0;
+
+  // Bordures (épaisseur)
+  static const double borderWidthThin = 1.0;
+  static const double borderWidthMedium = 1.5;
+
   // TODO : Ajouter d'autres tailles utilisées dans l'application
 
   // Borders radius
@@ -33,5 +43,5 @@ abstract final class AppSizes {
   static const double iconXs = 14.0;
   static const double iconSm = 16.0;
   static const double iconMd = 20.0;
-
+  static const double iconLg = 24.0;
 }

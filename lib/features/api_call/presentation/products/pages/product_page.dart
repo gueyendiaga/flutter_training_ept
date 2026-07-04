@@ -6,7 +6,7 @@ import 'package:flutter_training/core/repositories/product_repository.dart';
 import 'package:flutter_training/features/api_call/presentation/products/widgets/product_item_widget.dart';
 
 import '../../../../../core/constants/app_sizes.dart';
-import '../../../../whatsapp/presentation/chat/widgets/product_form_dialog.dart';
+import '../widgets/product_form_dialog.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage({super.key});
@@ -43,6 +43,7 @@ class _ProductPageState extends State<ProductPage> {
       setState(()=> isLoading = false);
     }
   }
+
   // Create product
   Future<void> _createProduct(ProductModel product) async {
     try {
@@ -57,10 +58,20 @@ class _ProductPageState extends State<ProductPage> {
 
   // Update product
   Future<void> _updateProduct(ProductModel product) async {
+    debugPrint('updateProduct called');
     try {
       await _productRepository.updateProduct(product);
+      //_loadProducts();
+      setState(() {
+        final index = products.indexWhere((item)=> item.id == product.id);
+        products[index] = product;
+      });
       _showSnackbar('Produit mis à jour avec succès');
     } catch(error) {
+      debugPrint('Erreur lors de la modification du produit');
+      debugPrint('⚠ ERROR: $error');
+      debugPrint('⚠ PAYLOAD: ${product.toJson()}');
+      debugPrint('⚠ PRODUCT ID: ${product.id}');
       _showSnackbar('Erreur lors de la modification du produit', isError: true);
     }
   }
@@ -69,9 +80,11 @@ class _ProductPageState extends State<ProductPage> {
   Future<void> _deleteProduct(String productId) async {
     try {
       await _productRepository.deleteProduct(productId);
+      _loadProducts();
       _showSnackbar('Produit supprimé avec succès');
-    } catch(error) {
-      _showSnackbar('Erreur lors de la suppression du produit', isError: true);
+    } catch (e) {
+      debugPrint('Erreur lors de la suppression du produit : $e');
+      _showSnackbar('Erreur lors de la suppression du produit : $e', isError: true);
     }
   }
 
@@ -96,11 +109,53 @@ class _ProductPageState extends State<ProductPage> {
     );
   }
 
+  void _showConfirmationDialog(ProductModel product) {
+    showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Supprimer le produit'),
+          content: Text(
+            'Voulez-vous vraiment supprimer le produit ${product.title}',
+          ),
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Annuler'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Supprimer'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                _deleteProduct(product.id!);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Products'),
+        actions: [
+          IconButton(
+            onPressed: _loadProducts,
+            icon: const Icon(Icons.refresh),
+            tooltip: 'Actualiser',
+          ),
+        ],
       ),
       body: _buildBody(),
       floatingActionButton: FloatingActionButton(
@@ -119,9 +174,29 @@ class _ProductPageState extends State<ProductPage> {
       );
     }
     /// Ill faut afficher le message d'erreur si errorMessage n'est pas null
-    if(errorMessage != null) {
-      return Center(child: Text(errorMessage!, style: TextStyle(color: Colors.red, fontSize: AppSizes.fontSizeLg)));
+    if (errorMessage != null) {
+      return Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.error_outline, size: 48, color: Colors.red),
+            const SizedBox(height: AppSizes.sm),
+            Text(
+              errorMessage!,
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.red),
+            ),
+            const SizedBox(height: AppSizes.md),
+            FilledButton.icon(
+              onPressed: _loadProducts,
+              icon: const Icon(Icons.refresh),
+              label: const Text('Réessayer'),
+            ),
+          ],
+        ),
+      );
     }
+
 
     /// Il faut afficher le message "No products found" si products est vide
     if(products.isEmpty) {
@@ -141,9 +216,7 @@ class _ProductPageState extends State<ProductPage> {
           final product = products.elementAt(index);
           return ProductItemWidget(
               product: product,
-            onDelete: () {
-                // TODO: show confirmation dialog before deleting the product
-            },
+            onDelete: ()=> _showConfirmationDialog(product),
             onEdit: ()=> _openProductForm(product: product),
           );
         },

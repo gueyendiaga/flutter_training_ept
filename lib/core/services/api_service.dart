@@ -48,7 +48,7 @@ class ApiService {
   // DELETE
   Future<void> delete(String path) async {
     try {
-      await _dio.put(path);
+      await _dio.delete(path);
     } catch(e) {
       throw Exception('Failed to PUT data: $e');
     }
